@@ -1,0 +1,7 @@
+{
+    "name": "Page Analyzer",
+    "description": "Analyze Html, CSS and Javascript of active page.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "devtools_page": "devtools.html"
+  }
