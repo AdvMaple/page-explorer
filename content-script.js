@@ -40,7 +40,6 @@ class Analyzer {
     }
 }
 
-
 function run() {
     const analyzer = new Analyzer()
     analyzer.banner()
@@ -51,4 +50,5 @@ function run() {
 window.addEventListener('load', () => {
     run()
 }, false)
+
 
