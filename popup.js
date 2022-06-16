@@ -2,15 +2,18 @@ const sidebarReload = document.getElementById('reload')
 const sectionColors = document.getElementById('section-colors')
 const sectionImages = document.getElementById('section-images')
 const sectionClasses = document.getElementById('section-classes')
+const sectionBoxShadows = document.getElementById('section-box-shadows')
 const sidebarColors = document.getElementById('sidebar-item-colors')
 const sidebarImages = document.getElementById('sidebar-item-images')
 const sidebarClasses = document.getElementById('sidebar-item-classes')
+const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
 let activeSection = sectionColors
 const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
 const SECTIONS = {
     COLORS: 0,
     IMAGES: 1,
-    CLASSES: 2
+    CLASSES: 2,
+    BOX_SHADOWS: 3,
 }
 
 // Event Listeners
@@ -22,6 +25,9 @@ sidebarImages.addEventListener('click', () => {
 })
 sidebarClasses.addEventListener('click', () => {
     setVisibleSection(SECTIONS.CLASSES)
+})
+sidebarBoxShadows.addEventListener('click', () => {
+    setVisibleSection(SECTIONS.BOX_SHADOWS)
 })
 sidebarReload.addEventListener('click', async () => {
     await reloadPopup()
@@ -43,6 +49,7 @@ function run() {
             imageUrls: [],
             links: [],
             colors: {},
+            boxShadows: [],
         }
         
         analyze() {
@@ -54,9 +61,7 @@ function run() {
                 const element = elements[i]
                 const style = getComputedStyle(element)
     
-                const attributesColor = ['color', 'backgroundColor', 'accentColor', 'borderColor']
                 const attributesLinkGraphic = ['href', 'src', 'backgroundImage', 'borderImage']
-                
                 // links and graphics
                 for(let j = 0; j < attributesLinkGraphic.length; j++) {
                     const attr = attributesLinkGraphic[j]
@@ -67,10 +72,14 @@ function run() {
                 }
     
                 // colors
+                const attributesColor = ['color', 'backgroundColor', 'accentColor', 'borderColor']
                 for(let j = 0; j < attributesColor.length; j++) {
                     const color = style[attributesColor[j]]
                     this._checkAndAddColor(color)
                 }
+
+                // box shadow
+                this._checkAndAddBoxShadow(style.boxShadow)
     
             }
     
@@ -99,12 +108,18 @@ function run() {
             if(this.data.colors[val]) return this.data.colors[val] += 1
             this.data.colors[val] = 1
         }
+
+        _checkAndAddBoxShadow(val) {
+            if(!this._existsValue(val)) return
+            this.data.boxShadows.push(val)
+        }
     
         _resetData() {
             this.data = {
                 imageUrls: [],
                 links: [],
-                colors: {}
+                colors: {},
+                boxShadows: [],
             }
         }
     
@@ -160,6 +175,25 @@ function result(resultTab) {
         sectionColors.appendChild(colorEl)
     }
 
+    // Box Shadow Section
+    sectionBoxShadows.innerHTML = ''
+    for(let i = 0; i < result.boxShadows.length; i++) {
+        const boxShadowWrapperEl = document.createElement('div')
+        boxShadowWrapperEl.classList.add('section-element')
+        boxShadowWrapperEl.style.backgroundColor = 'white'
+        boxShadowWrapperEl.addEventListener('click', (e) => {
+            copyToClp(e.target.style.boxShadow)
+        })
+
+        const boxShadowEl = document.createElement('div')
+        boxShadowEl.style.boxShadow = result.boxShadows[i]
+        boxShadowEl.style.height = '60px'
+        boxShadowEl.style.width = '60px'
+        boxShadowWrapperEl.appendChild(boxShadowEl)
+        
+        sectionBoxShadows.appendChild(boxShadowWrapperEl)
+    }
+
     console.log(result)
 }
 
@@ -178,6 +212,10 @@ function setVisibleSection(section) {
         case SECTIONS.CLASSES:
             sectionClasses.style.display = 'grid'
             activeSection = sectionClasses
+            break
+        case SECTIONS.BOX_SHADOWS:
+            sectionBoxShadows.style.display = 'grid'
+            activeSection = sectionBoxShadows
             break
         default:
             break
