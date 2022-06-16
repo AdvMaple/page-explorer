@@ -93,7 +93,12 @@ function run() {
                 if(a.counter > b.counter) return -1
                 return 0
             })
-    
+
+            // filter out duplicates
+            this.data.imageUrls = [...new Set(this.data.imageUrls)]
+            this.data.links = [...new Set(this.data.links)]
+            this.data.boxShadows = [...new Set(this.data.boxShadows)]
+
             return this.data
         }
     
