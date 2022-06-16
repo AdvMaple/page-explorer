@@ -71,6 +71,7 @@ section {
     cursor: pointer;
     display: grid;
     place-items: center;
+    overflow: hidden;
 }
 
 .section-element img {
