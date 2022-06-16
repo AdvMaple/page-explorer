@@ -115,7 +115,7 @@ function run() {
         _isGraphic(url) {
             if(typeof url !== 'string') return false
             const IMAGE_EXTENSIONS = ['.jpg', '.png', '.svg', '.jpeg', '.apng', '.avif', '.gif', '.jfif', '.pjpeg', '.pjp', '.webp']
-            return IMAGE_EXTENSIONS.filter(ext => url.includes(ext)) .length > 0
+            return IMAGE_EXTENSIONS.filter(ext => url.includes(ext)).length > 0 || url.includes('data:image')
         }
     
         banner() {
