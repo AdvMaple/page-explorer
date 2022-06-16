@@ -24,13 +24,17 @@ sidebarClasses.addEventListener('click', () => {
     setVisibleSection(SECTIONS.CLASSES)
 })
 loadButton.addEventListener('click', async () => {
+    await reloadPopup()
+})
+
+async function reloadPopup() {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
         function: run,
     }, result)
-})
+}
 
 function run() {
     // analyzer class
@@ -118,7 +122,7 @@ function run() {
            console.log(`%cPage Analyzer ${manifestData.version}`, 'font-weight: bold; font-family: "Roboto", sans-serif;')
         }
     }
-    
+
     const analyzer = new Analyzer()
     return analyzer.analyze()
 }
@@ -173,3 +177,5 @@ function setVisibleSection(section) {
             break
     }
 }
+
+reloadPopup()
