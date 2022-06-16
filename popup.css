@@ -10,6 +10,7 @@
     background-color: #d65d0e;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 
 .side-item:last-child {
@@ -81,21 +82,20 @@ body {
 
 .alert {
     position: fixed;
-    top: 20px;
-    padding: 20px;
+    top: 0;
+    padding: 12px;
     font-size: 14px;
     color: #ffffff;
-    background-color: #98971a;
+    background-color: #d65d0e;
     animation: alert-box 0.4s ease;
-    border-radius: 4px;
-    left: 50%;
-    transform: translate(-50%);
+    width: 100%;
+    text-align: center;
   }
   @keyframes alert-box {
     0% {
       top: -10%;
     }
     100% {
-      top: 20px;
+      top: 0;
     }
   }
