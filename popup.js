@@ -153,7 +153,7 @@ function result(resultTab) {
         const imgEl = document.createElement('div')
         imgEl.classList.add('section-element')
         imgEl.innerHTML = `
-            <img src="${result.imageUrls[i]}">
+            <img src="${getUrl(result.imageUrls[i])}">
         `
         imgEl.addEventListener('click', (e) => {
             copyToClp(e.target.src)
@@ -253,6 +253,12 @@ function copyToClp(txt){
     setTimeout(() => {
         alert.remove()
     }, 1500)
+}
+
+function getUrl(url) {
+    const match = url.match(/(?<=url\(\")(.*)(?=\"\))/)
+    if(match) return match[0]
+    return url
 }
 
 reloadPopup()
