@@ -214,7 +214,7 @@ function copyToClp(txt){
     document.body.appendChild(alert)
     setTimeout(() => {
         alert.remove()
-    }, 2000)
+    }, 1500)
 }
 
 reloadPopup()
