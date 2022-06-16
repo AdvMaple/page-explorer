@@ -16,9 +16,10 @@
 
 .sidebar-item {
     border-bottom: 1px solid #282828;
-    padding: 12px;
     display: grid;
     place-items: center;
+    width: 48px;
+    height: 48px;
 }
 
 .sidebar-item img {
@@ -48,7 +49,7 @@ section {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    overflow-y: auto;
+    overflow: auto;
     gap: 8px;
     padding: 20px;
     grid-auto-flow: dense;
@@ -56,6 +57,16 @@ section {
 
 .section-element {
     height: 120px;
+    position: relative;
+    border: 1px solid white;
+}
+
+.section-element--counter {
+    position: absolute;
+    bottom: 4px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
 }
 
 .section-element img {
@@ -63,7 +74,6 @@ section {
     object-position: center;
     height: 100%;
     width: 100%;
-    border: 1px solid white;
 }
 
 body {

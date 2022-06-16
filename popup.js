@@ -54,7 +54,16 @@ function result(resultTab) {
 
     // Color Section
     sectionColors.innerHTML = ''
-    
+    for(let i = 0; i < result.colors.length; i++) {
+        const colorEl = document.createElement('div')
+        colorEl.classList.add('section-element')
+        colorEl.style.backgroundColor = result.colors[i].color
+        colorEl.innerHTML = `
+            <div class="section-element--counter">${result.colors[i].counter}</div>
+        `
+        sectionColors.appendChild(colorEl)
+    }
+
     console.log(result)
 }
 
