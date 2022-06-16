@@ -140,6 +140,10 @@ function result(resultTab) {
         imgEl.innerHTML = `
             <img src="${result.imageUrls[i]}">
         `
+        imgEl.addEventListener('click', (e) => {
+            copyToClp(e.target.src)
+        })
+
         sectionImages.appendChild(imgEl)
     }
 
@@ -149,14 +153,16 @@ function result(resultTab) {
         const colorEl = document.createElement('div')
         colorEl.classList.add('section-element')
         colorEl.style.backgroundColor = result.colors[i].color
-        colorEl.innerHTML = `
-            <div class="section-element--counter">${result.colors[i].counter}</div>
-        `
+        colorEl.addEventListener('click', (e) => {
+            copyToClp(e.target.style.backgroundColor)
+        })
+        
         sectionColors.appendChild(colorEl)
     }
 
     console.log(result)
 }
+
 
 function setVisibleSection(section) {
     activeSection.style.display = 'none'
@@ -176,6 +182,39 @@ function setVisibleSection(section) {
         default:
             break
     }
+}
+
+// thank you https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript/51126086#51126086
+function copyToClp(txt){
+    var m = document
+    txt = m.createTextNode(txt)
+    var w = window
+    var b = m.body
+    b.appendChild(txt)
+    if (b.createTextRange) {
+        var d = b.createTextRange()
+        d.moveToElementText(txt)
+        d.select()
+        m.execCommand('copy')
+    } 
+    else {
+        var d = m.createRange()
+        var g = w.getSelection
+        d.selectNodeContents(txt)
+        g().removeAllRanges()
+        g().addRange(d)
+        m.execCommand('copy')
+        g().removeAllRanges()
+    }
+    txt.remove()
+
+    const alert = document.createElement('div')
+    alert.classList.add('alert')
+    alert.innerHTML = 'Copied!'
+    document.body.appendChild(alert)
+    setTimeout(() => {
+        alert.remove()
+    }, 2000)
 }
 
 reloadPopup()

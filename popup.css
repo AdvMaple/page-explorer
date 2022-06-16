@@ -65,15 +65,7 @@ section {
 .section-element {
     height: 120px;
     position: relative;
-    border: 1px solid white;
-}
-
-.section-element--counter {
-    position: absolute;
-    bottom: 4px;
-    left: 0px;
-    width: 100%;
-    text-align: center;
+    border: 1px solid #dedede;
 }
 
 .section-element img {
@@ -84,5 +76,26 @@ section {
 }
 
 body {
-    background: #282828;
+    background-color: #282828;
 }
+
+.alert {
+    position: fixed;
+    top: 20px;
+    padding: 20px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #98971a;
+    animation: alert-box 0.4s ease;
+    border-radius: 4px;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  @keyframes alert-box {
+    0% {
+      top: -10%;
+    }
+    100% {
+      top: 20px;
+    }
+  }
