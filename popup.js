@@ -1,4 +1,4 @@
-const loadButton = document.getElementById('load')
+const sidebarReload = document.getElementById('reload')
 const sectionColors = document.getElementById('section-colors')
 const sectionImages = document.getElementById('section-images')
 const sectionClasses = document.getElementById('section-classes')
@@ -23,7 +23,7 @@ sidebarImages.addEventListener('click', () => {
 sidebarClasses.addEventListener('click', () => {
     setVisibleSection(SECTIONS.CLASSES)
 })
-loadButton.addEventListener('click', async () => {
+sidebarReload.addEventListener('click', async () => {
     await reloadPopup()
 })
 
