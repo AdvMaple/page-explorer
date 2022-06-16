@@ -67,6 +67,7 @@ section {
     height: 120px;
     position: relative;
     border: 1px solid #dedede;
+    cursor: pointer;
 }
 
 .section-element img {
