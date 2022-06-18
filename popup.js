@@ -56,7 +56,7 @@ function run() {
 
                 // svg
                 if(element.tagName === 'svg') {
-                    this.data.svgs.push(element.outerHTML)
+                    if(!this.data.svgs.includes(element.outerHTML)) this.data.svgs.push(element.outerHTML)
                 }
 
                 // box shadow
