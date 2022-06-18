@@ -247,15 +247,25 @@ function generateSidebar(data) {
     // add custom items, like reload or dark mode switch
     const darkModeEl = document.createElement('div')
     darkModeEl.classList.add('sidebar-item')
+    darkModeEl.innerHTML = `
+        <object data="assets/brightness-6.svg"></object>
+    `
     darkModeEl.addEventListener('click', () => {
         toggleDarkMode()
     })
+    darkModeEl.style.marginTop = 'auto'
 
     const reloadEl = document.createElement('div')
     reloadEl.classList.add('sidebar-item')
+    reloadEl.innerHTML = `
+        <object data="assets/reload.svg"></object>
+    `
     reloadEl.addEventListener('click', async () => {
         await reloadPopup()
     })
+
+    sidebarWrapper.appendChild(darkModeEl)
+    sidebarWrapper.appendChild(reloadEl)
 }
 
 function generateSections(data) {
