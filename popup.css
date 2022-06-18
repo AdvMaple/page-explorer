@@ -38,14 +38,11 @@
     right: 0;
     padding-right: 4px;
     color: #282828;
+    pointer-events: none;
 }
 
 .sidebar-item.sidebar-item--active {
    background-color: #fe8019;
-}
-
-.sidebar-item#dark-mode-switch {
-    margin-top: auto;
 }
 
 main section {
