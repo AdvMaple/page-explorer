@@ -1,15 +1,3 @@
-const sidebarReload = document.getElementById('reload')
-const sidebarDarkModeSwitch = document.getElementById('dark-mode-switch')
-const sectionColors = document.getElementById('section-colors')
-const sectionImages = document.getElementById('section-image-urls')
-const sectionSvgs = document.getElementById('section-svgs')
-const sectionClasses = document.getElementById('section-classes')
-const sectionBoxShadows = document.getElementById('section-box-shadows')
-const sidebarColors = document.getElementById('sidebar-item-colors')
-const sidebarImages = document.getElementById('sidebar-item-image-urls')
-const sidebarSvgs = document.getElementById('sidebar-item-svgs')
-const sidebarClasses = document.getElementById('sidebar-item-classes')
-const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
 let activeSection, activeSidebarItem
 let isDarkMode = false
 const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
@@ -20,29 +8,6 @@ const SECTIONS = {
     BOX_SHADOWS: 3,
     SVGS: 4
 }
-
-// Event Listeners
-sidebarColors.addEventListener('click', () => {
-    setVisibleSection(SECTIONS.COLORS)
-})
-sidebarImages.addEventListener('click', () => {
-    setVisibleSection(SECTIONS.IMAGES)
-})
-sidebarClasses.addEventListener('click', () => {
-    setVisibleSection(SECTIONS.CLASSES)
-})
-sidebarBoxShadows.addEventListener('click', () => {
-    setVisibleSection(SECTIONS.BOX_SHADOWS)
-})
-sidebarSvgs.addEventListener('click', () => {
-    setVisibleSection(SECTIONS.SVGS)
-})
-sidebarReload.addEventListener('click', async () => {
-    await reloadPopup()
-})
-sidebarDarkModeSwitch.addEventListener('click', () => {
-    toggleDarkMode()
-})
 
 function toggleDarkMode() {
     isDarkMode = !isDarkMode
@@ -169,7 +134,11 @@ function result(resultTab) {
     const result = resultTab[0].result
     if(!result) return
 
+    generateSidebar(result)
+    generateSections(result)
+
     // Image Section
+    const sectionImages = document.getElementById('section-imageUrls')
     sectionImages.innerHTML = ''
     for(let i = 0; i < result.imageUrls.length; i++) {
         const imgEl = document.createElement('div')
@@ -185,6 +154,7 @@ function result(resultTab) {
     }
 
     // Svg Section
+    const sectionSvgs = document.getElementById('section-svgs')
     sectionSvgs.innerHTML = ''
     for(let i = 0; i < result.svgs.length; i++) {
         const svgWrapper = document.createElement('div')
@@ -198,6 +168,7 @@ function result(resultTab) {
     }
 
     // Color Section
+    const sectionColors = document.getElementById('section-colors')
     sectionColors.innerHTML = ''
     for(let i = 0; i < result.colors.length; i++) {
         const colorEl = document.createElement('div')
@@ -211,6 +182,7 @@ function result(resultTab) {
     }
 
     // Box Shadow Section
+    const sectionBoxShadows = document.getElementById('section-boxShadows')
     sectionBoxShadows.innerHTML = ''
     for(let i = 0; i < result.boxShadows.length; i++) {
         const boxShadowWrapperEl = document.createElement('div')
@@ -242,38 +214,60 @@ function result(resultTab) {
     console.log(result)
 }
 
+function generateSidebar(data) {
+    const sidebarWrapper = document.body.querySelector('.sidebar')
+    sidebarWrapper.innerHTML = ''
 
-function setVisibleSection(section) {
-    if(activeSection) activeSection.style.display = 'none'
-    if(activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
+    const dataKeys = Object.keys(data)
+    for(let i = 0; i < dataKeys.length; i++) {
+        const identifier = dataKeys[i]
+        const sidebarElement = document.createElement('div')
+        sidebarElement.classList.add('sidebar-item')
+        sidebarElement.id = `sidebar-item-${identifier}`
+        sidebarElement.innerHTML = `
+                <object data="assets/${identifier}.svg"></object>
+                <div class="sidebar-item--counter"></div>
+        `
+        sidebarElement.addEventListener('click', (e) => {
+            // change sidebar active element
+            if(activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
+            activeSidebarItem = e.target
+            activeSidebarItem.classList.add('sidebar-item--active')
 
-    switch(section) {
-        case SECTIONS.COLORS:
-            activeSection = sectionColors
-            activeSidebarItem = sidebarColors
-            break
-        case SECTIONS.IMAGES:
-            activeSection = sectionImages
-            activeSidebarItem = sidebarImages
-            break
-        case SECTIONS.SVGS:
-            activeSection = sectionSvgs
-            activeSidebarItem = sidebarSvgs
-            break
-        case SECTIONS.CLASSES:
-            activeSection = sectionClasses
-            activeSidebarItem = sidebarClasses
-            break
-        case SECTIONS.BOX_SHADOWS:
-            activeSection = sectionBoxShadows
-            activeSidebarItem = sidebarBoxShadows
-            break
-        default:
-            break
+            // change display of section
+            if(activeSection) activeSection.style.display = 'none'
+            console.log(`section-${e.target.id.replace('sidebar-item-', '')}`)
+            activeSection = document.getElementById(`section-${e.target.id.replace('sidebar-item-', '')}`)
+            activeSection.style.display = 'grid'
+        })
+        
+        sidebarWrapper.appendChild(sidebarElement)
     }
 
-    activeSection.style.display = 'grid'
-    activeSidebarItem.classList.add('sidebar-item--active')
+    // add custom items, like reload or dark mode switch
+    const darkModeEl = document.createElement('div')
+    darkModeEl.classList.add('sidebar-item')
+    darkModeEl.addEventListener('click', () => {
+        toggleDarkMode()
+    })
+
+    const reloadEl = document.createElement('div')
+    reloadEl.classList.add('sidebar-item')
+    reloadEl.addEventListener('click', async () => {
+        await reloadPopup()
+    })
+}
+
+function generateSections(data) {
+    const sectionWrapper = document.body.querySelector('main')
+    sectionWrapper.innerHTML = ''
+    const dataKeys = Object.keys(data)
+    for(let i = 0; i < dataKeys.length; i++) {
+        const identifier = dataKeys[i]
+        const sectionElement = document.createElement('section')
+        sectionElement.id = `section-${identifier}`
+        sectionWrapper.appendChild(sectionElement)
+    }
 }
 
 // thank you https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript/51126086#51126086
@@ -316,5 +310,4 @@ function getUrl(url) {
 }
 
 toggleDarkMode()
-setVisibleSection(SECTIONS.COLORS)
 reloadPopup()
