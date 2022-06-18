@@ -1,10 +1,12 @@
 const sidebarReload = document.getElementById('reload')
 const sectionColors = document.getElementById('section-colors')
 const sectionImages = document.getElementById('section-image-urls')
+const sectionSvgs = document.getElementById('section-svgs')
 const sectionClasses = document.getElementById('section-classes')
 const sectionBoxShadows = document.getElementById('section-box-shadows')
 const sidebarColors = document.getElementById('sidebar-item-colors')
 const sidebarImages = document.getElementById('sidebar-item-image-urls')
+const sidebarSvgs = document.getElementById('sidebar-item-svgs')
 const sidebarClasses = document.getElementById('sidebar-item-classes')
 const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
 let activeSection, activeSidebarItem
@@ -14,6 +16,7 @@ const SECTIONS = {
     IMAGES: 1,
     CLASSES: 2,
     BOX_SHADOWS: 3,
+    SVGS: 4
 }
 
 // Event Listeners
@@ -28,6 +31,9 @@ sidebarClasses.addEventListener('click', () => {
 })
 sidebarBoxShadows.addEventListener('click', () => {
     setVisibleSection(SECTIONS.BOX_SHADOWS)
+})
+sidebarSvgs.addEventListener('click', () => {
+    setVisibleSection(SECTIONS.SVGS)
 })
 sidebarReload.addEventListener('click', async () => {
     await reloadPopup()
@@ -168,6 +174,19 @@ function result(resultTab) {
         sectionImages.appendChild(imgEl)
     }
 
+    // Svg Section
+    sectionSvgs.innerHTML = ''
+    for(let i = 0; i < result.svgs.length; i++) {
+        const svgWrapper = document.createElement('div')
+        svgWrapper.classList.add('section-element')
+        svgWrapper.innerHTML = result.svgs[i]
+        svgWrapper.addEventListener('click', (e) => {
+            copyToClp(e.target.innerHTML)
+        })
+
+        sectionSvgs.appendChild(svgWrapper)
+    }
+
     // Color Section
     sectionColors.innerHTML = ''
     for(let i = 0; i < result.colors.length; i++) {
@@ -209,7 +228,7 @@ function result(resultTab) {
         })
         if(result[dataIdentifier]) el.querySelector('.sidebar-item--counter').innerHTML = result[dataIdentifier].length
     }
-    
+
     console.log(result)
 }
 
@@ -226,6 +245,10 @@ function setVisibleSection(section) {
         case SECTIONS.IMAGES:
             activeSection = sectionImages
             activeSidebarItem = sidebarImages
+            break
+        case SECTIONS.SVGS:
+            activeSection = sectionSvgs
+            activeSidebarItem = sidebarSvgs
             break
         case SECTIONS.CLASSES:
             activeSection = sectionClasses
