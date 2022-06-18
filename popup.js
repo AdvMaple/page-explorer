@@ -137,67 +137,66 @@ function result(resultTab) {
     generateSidebar(result)
     generateSections(result)
 
-    // Image Section
-    const sectionImages = document.getElementById('section-imageUrls')
-    sectionImages.innerHTML = ''
-    for(let i = 0; i < result.imageUrls.length; i++) {
-        const imgEl = document.createElement('div')
-        imgEl.classList.add('section-element')
-        imgEl.innerHTML = `
-            <img src="${getUrl(result.imageUrls[i])}">
-        `
-        imgEl.addEventListener('click', (e) => {
-            copyToClp(e.target.src)
-        })
+    // insert elements
+    const dataKeys = Object.keys(result)
+    for(let i = 0; i < dataKeys.length; i++) {
+        const identifier = dataKeys[i]
+        const section = document.getElementById(`section-${identifier}`)
+        section.innerHTML = ''
+        for(let j = 0; j < result[identifier].length; j++) {
+            const data = result[identifier][j]
+            const sectionElement = document.createElement('div')
+            sectionElement.classList.add('section-element')
 
-        sectionImages.appendChild(imgEl)
-    }
-
-    // Svg Section
-    const sectionSvgs = document.getElementById('section-svgs')
-    sectionSvgs.innerHTML = ''
-    for(let i = 0; i < result.svgs.length; i++) {
-        const svgWrapper = document.createElement('div')
-        svgWrapper.classList.add('section-element')
-        svgWrapper.innerHTML = result.svgs[i]
-        svgWrapper.addEventListener('click', (e) => {
-            copyToClp(e.target.innerHTML)
-        })
-
-        sectionSvgs.appendChild(svgWrapper)
-    }
-
-    // Color Section
-    const sectionColors = document.getElementById('section-colors')
-    sectionColors.innerHTML = ''
-    for(let i = 0; i < result.colors.length; i++) {
-        const colorEl = document.createElement('div')
-        colorEl.classList.add('section-element')
-        colorEl.style.backgroundColor = result.colors[i].color
-        colorEl.addEventListener('click', (e) => {
-            copyToClp(e.target.style.backgroundColor)
-        })
+            // custom for each identifier
+            
+            // Image
+            if(identifier === 'imageUrls') {
+                sectionElement.innerHTML = `
+                    <img src="${getUrl(data)}">
+                `
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.src)
+                })
+            }
+            // Svg
+            else if(identifier === 'svgs') {
+                sectionElement.innerHTML = data
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.innerHTML)
+                })
+            }
+            // Color
+            else if (identifier === 'colors') {
+                sectionElement.style.backgroundColor = data.color
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.style.backgroundColor)
+                })
+            }
+            // Box Shadow
+            else if (identifier === 'boxShadows') {
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.style.boxShadow)
+                })
         
-        sectionColors.appendChild(colorEl)
-    }
+                const boxShadowEl = document.createElement('div')
+                boxShadowEl.style.boxShadow = data
+                boxShadowEl.style.height = '60px'
+                boxShadowEl.style.width = '60px'
+                sectionElement.appendChild(boxShadowEl)
+            }
+            // Default Element
+            else {
+                sectionElement.innerText = data
+                sectionElement.style.padding = '8px'
+                sectionElement.setAttribute('data-copy', data)
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.getAttribute('data-copy'))
+                })
+            }
 
-    // Box Shadow Section
-    const sectionBoxShadows = document.getElementById('section-boxShadows')
-    sectionBoxShadows.innerHTML = ''
-    for(let i = 0; i < result.boxShadows.length; i++) {
-        const boxShadowWrapperEl = document.createElement('div')
-        boxShadowWrapperEl.classList.add('section-element')
-        boxShadowWrapperEl.addEventListener('click', (e) => {
-            copyToClp(e.target.style.boxShadow)
-        })
-
-        const boxShadowEl = document.createElement('div')
-        boxShadowEl.style.boxShadow = result.boxShadows[i]
-        boxShadowEl.style.height = '60px'
-        boxShadowEl.style.width = '60px'
-        boxShadowWrapperEl.appendChild(boxShadowEl)
-        
-        sectionBoxShadows.appendChild(boxShadowWrapperEl)
+            section.appendChild(sectionElement)
+        }
     }
 
     // add counters to sidebar
