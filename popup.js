@@ -1,10 +1,10 @@
 const sidebarReload = document.getElementById('reload')
 const sectionColors = document.getElementById('section-colors')
-const sectionImages = document.getElementById('section-images')
+const sectionImages = document.getElementById('section-image-urls')
 const sectionClasses = document.getElementById('section-classes')
 const sectionBoxShadows = document.getElementById('section-box-shadows')
 const sidebarColors = document.getElementById('sidebar-item-colors')
-const sidebarImages = document.getElementById('sidebar-item-images')
+const sidebarImages = document.getElementById('sidebar-item-image-urls')
 const sidebarClasses = document.getElementById('sidebar-item-classes')
 const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
 let activeSection, activeSidebarItem
@@ -45,12 +45,7 @@ async function reloadPopup() {
 function run() {
     // analyzer class
     class Analyzer {
-        data = {
-            imageUrls: [],
-            links: [],
-            colors: {},
-            boxShadows: [],
-        }
+        data = {}
         
         analyze() {
             this._resetData()
@@ -76,6 +71,11 @@ function run() {
                 for(let j = 0; j < attributesColor.length; j++) {
                     const color = style[attributesColor[j]]
                     this._checkAndAddColor(color)
+                }
+
+                // svg
+                if(element.tagName === 'svg') {
+                    this.data.svgs.push(element.outerHTML)
                 }
 
                 // box shadow
@@ -125,6 +125,7 @@ function run() {
                 links: [],
                 colors: {},
                 boxShadows: [],
+                svgs: [],
             }
         }
     
@@ -199,6 +200,16 @@ function result(resultTab) {
         sectionBoxShadows.appendChild(boxShadowWrapperEl)
     }
 
+    // add counters to sidebar
+    const sidebarItems = document.querySelector('.sidebar').children
+    for(let i = 0; i < sidebarItems.length; i++) {
+        const el = sidebarItems[i]
+        const dataIdentifier = el.id.replace('sidebar-item-', '').replace(/-./g, (val) => {
+            return val.charAt(1).toUpperCase()
+        })
+        if(result[dataIdentifier]) el.querySelector('.sidebar-item--counter').innerHTML = result[dataIdentifier].length
+    }
+    
     console.log(result)
 }
 
