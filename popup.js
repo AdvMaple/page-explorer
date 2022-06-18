@@ -148,37 +148,31 @@ function result(resultTab) {
             const sectionElement = document.createElement('div')
             sectionElement.classList.add('section-element')
 
+            // default copy attribute, if you need another copy just overwrite below
+            sectionElement.setAttribute('data-copy', data)
+
+            // default event listener, will copy data. Again overwrite below if necessary
+            sectionElement.addEventListener('click', (e) => {
+                copyToClp(e.target.getAttribute('data-copy'))
+            })
+
             // custom for each identifier
             
             // Image
             if(identifier === 'imageUrls') {
-                sectionElement.innerHTML = `
-                    <img src="${getUrl(data)}">
-                `
-                sectionElement.addEventListener('click', (e) => {
-                    copyToClp(e.target.src)
-                })
+                sectionElement.innerHTML = `<img src="${getUrl(data)}">`
             }
             // Svg
             else if(identifier === 'svgs') {
                 sectionElement.innerHTML = data
-                sectionElement.addEventListener('click', (e) => {
-                    copyToClp(e.target.innerHTML)
-                })
             }
             // Color
             else if (identifier === 'colors') {
                 sectionElement.style.backgroundColor = data.color
-                sectionElement.addEventListener('click', (e) => {
-                    copyToClp(e.target.style.backgroundColor)
-                })
+                sectionElement.setAttribute('data-copy', data.color)
             }
             // Box Shadow
             else if (identifier === 'boxShadows') {
-                sectionElement.addEventListener('click', (e) => {
-                    copyToClp(e.target.style.boxShadow)
-                })
-        
                 const boxShadowEl = document.createElement('div')
                 boxShadowEl.style.boxShadow = data
                 boxShadowEl.style.height = '60px'
@@ -189,10 +183,6 @@ function result(resultTab) {
             else {
                 sectionElement.innerText = data
                 sectionElement.style.padding = '8px'
-                sectionElement.setAttribute('data-copy', data)
-                sectionElement.addEventListener('click', (e) => {
-                    copyToClp(e.target.getAttribute('data-copy'))
-                })
             }
 
             section.appendChild(sectionElement)
