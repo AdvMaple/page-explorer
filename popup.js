@@ -160,7 +160,9 @@ function result(resultTab) {
             
             // Image
             if(identifier === 'imageUrls') {
-                sectionElement.innerHTML = `<img src="${getUrl(data)}">`
+                sectionElement.style.cssText = 'background-repeat: no-repeat;background-position: center center;'
+                sectionElement.style.backgroundImage = `url(${getUrl(data)})`
+                sectionElement.setAttribute('data-copy', getUrl(data))
             }
             // Svg
             else if(identifier === 'svgs') {
