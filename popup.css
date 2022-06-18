@@ -26,6 +26,10 @@
     cursor: pointer;
 }
 
+.sidebar-item.sidebar-item--active {
+   background-color: #fe8019;
+}
+
 .sidebar-item#reload {
     margin-top: auto;
 }

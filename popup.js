@@ -7,7 +7,7 @@ const sidebarColors = document.getElementById('sidebar-item-colors')
 const sidebarImages = document.getElementById('sidebar-item-images')
 const sidebarClasses = document.getElementById('sidebar-item-classes')
 const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
-let activeSection = sectionColors
+let activeSection, activeSidebarItem
 const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
 const SECTIONS = {
     COLORS: 0,
@@ -204,27 +204,32 @@ function result(resultTab) {
 
 
 function setVisibleSection(section) {
-    activeSection.style.display = 'none'
+    if(activeSection) activeSection.style.display = 'none'
+    if(activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
+
     switch(section) {
         case SECTIONS.COLORS:
-            sectionColors.style.display = 'grid'
             activeSection = sectionColors
+            activeSidebarItem = sidebarColors
             break
         case SECTIONS.IMAGES:
-            sectionImages.style.display = 'grid'
             activeSection = sectionImages
+            activeSidebarItem = sidebarImages
             break
         case SECTIONS.CLASSES:
-            sectionClasses.style.display = 'grid'
             activeSection = sectionClasses
+            activeSidebarItem = sidebarClasses
             break
         case SECTIONS.BOX_SHADOWS:
-            sectionBoxShadows.style.display = 'grid'
             activeSection = sectionBoxShadows
+            activeSidebarItem = sidebarBoxShadows
             break
         default:
             break
     }
+
+    activeSection.style.display = 'grid'
+    activeSidebarItem.classList.add('sidebar-item--active')
 }
 
 // thank you https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript/51126086#51126086
@@ -266,4 +271,5 @@ function getUrl(url) {
     return url
 }
 
+setVisibleSection(SECTIONS.COLORS)
 reloadPopup()
