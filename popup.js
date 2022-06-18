@@ -187,7 +187,6 @@ function result(resultTab) {
     for(let i = 0; i < result.boxShadows.length; i++) {
         const boxShadowWrapperEl = document.createElement('div')
         boxShadowWrapperEl.classList.add('section-element')
-        boxShadowWrapperEl.style.backgroundColor = 'white'
         boxShadowWrapperEl.addEventListener('click', (e) => {
             copyToClp(e.target.style.boxShadow)
         })
