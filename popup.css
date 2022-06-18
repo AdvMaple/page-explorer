@@ -27,12 +27,17 @@
     position: relative;
 }
 
+.sidebar-item object {
+    pointer-events: none;
+}
+
 .sidebar-item--counter {
-    font-size: 11px;
+    font-size: 10px;
     position: absolute;
     bottom: 0;
     right: 0;
     padding-right: 4px;
+    color: #282828;
 }
 
 .sidebar-item.sidebar-item--active {
@@ -41,11 +46,6 @@
 
 .sidebar-item#reload {
     margin-top: auto;
-}
-
-.sidebar-item img {
-    width: 24px;
-    height: 24px;
 }
 
 main section {
