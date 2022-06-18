@@ -177,6 +177,7 @@ function result(resultTab) {
                 boxShadowEl.style.boxShadow = data
                 boxShadowEl.style.height = '60px'
                 boxShadowEl.style.width = '60px'
+                boxShadowEl.style.pointerEvents = 'none'
                 sectionElement.appendChild(boxShadowEl)
             }
             // Default Element
