@@ -1,4 +1,5 @@
 const sidebarReload = document.getElementById('reload')
+const sidebarDarkModeSwitch = document.getElementById('dark-mode-switch')
 const sectionColors = document.getElementById('section-colors')
 const sectionImages = document.getElementById('section-image-urls')
 const sectionSvgs = document.getElementById('section-svgs')
@@ -10,6 +11,7 @@ const sidebarSvgs = document.getElementById('sidebar-item-svgs')
 const sidebarClasses = document.getElementById('sidebar-item-classes')
 const sidebarBoxShadows = document.getElementById('sidebar-item-box-shadows')
 let activeSection, activeSidebarItem
+let isDarkMode = false
 const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
 const SECTIONS = {
     COLORS: 0,
@@ -38,6 +40,14 @@ sidebarSvgs.addEventListener('click', () => {
 sidebarReload.addEventListener('click', async () => {
     await reloadPopup()
 })
+sidebarDarkModeSwitch.addEventListener('click', () => {
+    toggleDarkMode()
+})
+
+function toggleDarkMode() {
+    isDarkMode = !isDarkMode
+    document.body.classList.toggle('dark-mode')
+}
 
 async function reloadPopup() {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -305,5 +315,6 @@ function getUrl(url) {
     return url
 }
 
+toggleDarkMode()
 setVisibleSection(SECTIONS.COLORS)
 reloadPopup()

@@ -44,12 +44,16 @@
    background-color: #fe8019;
 }
 
-.sidebar-item#reload {
+.sidebar-item#dark-mode-switch {
     margin-top: auto;
 }
 
 main section {
     display: none;
+    color:#282828;
+}
+
+.dark-mode main section {
     color:#dedede;
 }
 
@@ -80,11 +84,15 @@ section {
 .section-element {
     height: 120px;
     position: relative;
-    border: 1px solid #dedede;
+    border: 1px solid #282828;
     cursor: pointer;
     display: grid;
     place-items: center;
     overflow: hidden;
+}
+
+.dark-mode .section-element {
+    border: 1px solid #dedede;
 }
 
 .section-element img {
@@ -95,6 +103,10 @@ section {
 }
 
 body {
+    background-color: #dedede;
+}
+
+body.dark-mode {
     background-color: #282828;
 }
 
