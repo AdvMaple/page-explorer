@@ -1,13 +1,6 @@
 let activeSection, activeSidebarItem
 let isDarkMode = false
 const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
-const SECTIONS = {
-    COLORS: 0,
-    IMAGES: 1,
-    CLASSES: 2,
-    BOX_SHADOWS: 3,
-    SVGS: 4
-}
 
 function toggleDarkMode() {
     isDarkMode = !isDarkMode
@@ -43,8 +36,8 @@ function run() {
                     const attr = attributesLinkGraphic[j]
                     const elementValue  = element[attr]
                     const styleValue = style[attr]
-                    this._checkAndAddGraphicLink(styleValue)
-                    this._checkAndAddGraphicLink(elementValue)
+                    this._checkAndAddLink(styleValue)
+                    this._checkAndAddLink(elementValue)
                 }
     
                 // colors
@@ -83,7 +76,7 @@ function run() {
             return this.data
         }
     
-        _checkAndAddGraphicLink(val) {
+        _checkAndAddLink(val) {
             if(!this._existsValue(val)) return
             if(this._isGraphic(val)) return this.data.imageUrls.push(val)
             this.data.links.push(val)
