@@ -145,3 +145,13 @@ body.dark-mode {
     color: var(--color-primary);
     background-color: var(--color-white);
 }
+
+#loading-page-text {
+    font-size: 32px;
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    font-style: italic;
+    font-weight: bold;
+}

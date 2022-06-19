@@ -214,6 +214,8 @@ function result(resultTab) {
     if (!resultTab) return
     const result = resultTab[0].result
     if (!result) return
+    document.body.querySelector('main').style.display = 'none'
+    document.getElementById('loading-page-text').style.display = 'block'
 
     generateSidebar(result)
     generateSections(result)
@@ -328,6 +330,8 @@ function result(resultTab) {
     }
 
     console.log(result)
+    document.body.querySelector('main').style.display = 'grid'
+    document.getElementById('loading-page-text').style.display = 'none'
 }
 
 function generateSidebar(data) {
