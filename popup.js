@@ -157,7 +157,7 @@ function result(resultTab) {
             
             // Image
             if(identifier === 'imageUrls') {
-                sectionElement.style.cssText = 'background-repeat: no-repeat;background-position: center center;'
+                sectionElement.style.cssText = 'background-repeat: no-repeat;background-position: center center;background-size:cover;'
                 sectionElement.style.backgroundImage = `url(${getUrl(data)})`
                 sectionElement.setAttribute('data-copy', getUrl(data))
             }
@@ -312,5 +312,4 @@ function getUrl(url) {
     return url
 }
 
-toggleDarkMode()
 reloadPopup()
