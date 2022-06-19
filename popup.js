@@ -56,6 +56,9 @@ function run() {
                     }
                 }
 
+                // html tag counters
+                this._checkAndAddHtmlTagName(element.tagName)
+
                 // box shadow
                 this._checkAndAddBoxShadow(style.boxShadow)
     
@@ -66,11 +69,14 @@ function run() {
             for(const color in this.data.colors) {
                 colorsSortable.push({color: color, counter: this.data.colors[color]})
             }
-            this.data.colors = colorsSortable.sort((a, b) => {
-                if(b.counter > a.counter) return 1
-                if(a.counter > b.counter) return -1
-                return 0
-            })
+            this.data.colors = this._sortArrayByCounter(colorsSortable)
+
+            // sort colors by counter -> hightest to lowest
+            const tagsSortable = []
+            for(const tagName in this.data.htmlTags) {
+                tagsSortable.push({tagName: tagName, counter: this.data.htmlTags[tagName]})
+            }
+            this.data.htmlTags = this._sortArrayByCounter(tagsSortable)
 
             // filter out duplicates
             this.data.imageUrls = [...new Set(this.data.imageUrls)]
@@ -82,6 +88,19 @@ function run() {
         _checkAndAddLink(val) {
             if(!this._existsValue(val) || typeof(val) !== 'string') return
             if(this._isGraphic(val)) return this.data.imageUrls.push(val)
+        }
+
+        _sortArrayByCounter(arr) {
+            return arr.sort((a, b) => {
+                if(b.counter > a.counter) return 1
+                if(a.counter > b.counter) return -1
+                return 0
+            })
+        }
+
+        _checkAndAddHtmlTagName(tagName) {
+            if(this.data.htmlTags[tagName]) return this.data.htmlTags[tagName] +=1
+            this.data.htmlTags[tagName] = 1
         }
     
         _checkAndAddColor(val) {
@@ -101,6 +120,7 @@ function run() {
                 colors: {},
                 boxShadows: [],
                 svgs: [],
+                htmlTags: {},
             }
         }
     
@@ -171,6 +191,14 @@ function result(resultTab) {
             else if (identifier === 'colors') {
                 sectionElement.style.backgroundColor = data.color
                 sectionElement.setAttribute('data-copy', data.color)
+            }
+            // Html Tags
+            else if (identifier === 'htmlTags') {
+                sectionElement.innerHTML = `
+                    <p style="font-weight: bold;">${data.tagName.toLowerCase()}</p>
+                    <p>${data.counter}</p>
+                `
+                sectionElement.setAttribute('data-copy', data.tagName.toLowerCase())
             }
             // Box Shadow
             else if (identifier === 'boxShadows') {
