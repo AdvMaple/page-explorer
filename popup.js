@@ -81,7 +81,7 @@ function run() {
         }
     
         _checkAndAddLink(val) {
-            if(!this._existsValue(val)) return
+            if(!this._existsValue(val) || typeof(val) !== 'string') return
             if(this._isGraphic(val)) return this.data.imageUrls.push(val)
             this.data.links.push(val)
         }
