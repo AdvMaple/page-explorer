@@ -8,6 +8,8 @@ function toggleDarkMode() {
 }
 
 async function reloadPopup() {
+    document.body.querySelector('main').style.display = 'none'
+    document.getElementById('loading-page-text').style.display = 'grid'
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
     chrome.scripting.executeScript({
@@ -214,8 +216,6 @@ function result(resultTab) {
     if (!resultTab) return
     const result = resultTab[0].result
     if (!result) return
-    document.body.querySelector('main').style.display = 'none'
-    document.getElementById('loading-page-text').style.display = 'block'
 
     generateSidebar(result)
     generateSections(result)
