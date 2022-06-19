@@ -135,6 +135,14 @@ function run() {
             this.data.boxShadows = [...new Set(this.data.boxShadows)]
 
             console.log(`done. took ${(performance.now() - start) / 1000}s`)
+
+            // add info data
+            this.data.home.htmlDocumentSize = new Blob([document.documentElement.outerHTML], {type : 'text/html'}).size / 1024 / 1024
+            this.data.home.htmlDocumentSizeUnit = 'MiB'
+            this.data.home.host = window.location.host
+            this.data.home.path = window.location.pathname
+            this.data.home.icon = document.querySelector('head [rel*="icon"]').getAttribute('href')
+            
             return this.data
         }
 
@@ -195,6 +203,7 @@ function run() {
                 htmlTags: {},
                 classes: {},
                 classesTmp: [],
+                home: {},
             }
         }
 
@@ -224,6 +233,9 @@ function result(resultTab) {
 
     generateSidebar(result)
     generateSections(result)
+
+    // set active section
+    setActiveSectionBySidebarElement(document.getElementById('sidebar-item-home'))
 
     // insert elements
     const dataKeys = Object.keys(result)
@@ -333,8 +345,25 @@ function result(resultTab) {
         const dataIdentifier = el.id.replace('sidebar-item-', '').replace(/-./g, (val) => {
             return val.charAt(1).toUpperCase()
         })
+        if(['home'].includes(dataIdentifier)) continue
         if (result[dataIdentifier]) el.querySelector('.sidebar-item--counter').innerHTML = result[dataIdentifier].length
     }
+
+    // home
+    document.getElementById('section-home').innerHTML = `
+        <div class="section-home-row">
+            <img class="home-page-icon" src="${result.home.icon}">
+        </div>
+        <div class="section-home-row section-home-row--host">
+            <div class="home-page-host">${result.home.host}</div>
+        </div>
+        <div class="section-home-row section-home-row--path">
+            <div class="home-page-path">${result.home.path}</div>
+        </div>
+        <div class="section-home-row section-home-row--info">
+            <div class="home-page-document-size">Document Size: ${result.home.htmlDocumentSize.toFixed(2)} ${result.home.htmlDocumentSizeUnit}</div>
+        </div>
+    `
 
     console.log(result)
     document.body.querySelector('main').style.display = 'grid'
@@ -356,7 +385,7 @@ function generateSidebar(data) {
                 <div class="sidebar-item--counter"></div>
         `
         sidebarElement.addEventListener('click', (e) => {
-            setActiveSectionByElement(e.target)
+            setActiveSectionBySidebarElement(e.target)
         })
 
         sidebarWrapper.appendChild(sidebarElement)
@@ -386,7 +415,7 @@ function generateSidebar(data) {
     sidebarWrapper.appendChild(reloadEl)
 }
 
-function setActiveSectionByElement(el, id) {
+function setActiveSectionBySidebarElement(el) {
     // change sidebar active element
     if (activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
     activeSidebarItem = el
@@ -394,7 +423,7 @@ function setActiveSectionByElement(el, id) {
 
     // change display of section
     if (activeSection) activeSection.style.top = '-9999999999px'
-    activeSection = document.getElementById(id) || document.getElementById(`section-${el.id.replace('sidebar-item-', '')}`)
+    activeSection = document.getElementById(`section-${el.id.replace('sidebar-item-', '')}`)
     activeSection.style.top = '0'
 }
 
@@ -411,19 +440,19 @@ function generateSections(data) {
         if (identifier === 'classes') {
             sectionElement.style.gridTemplateColumns = '1fr'
         }
+        else if (identifier === 'home') {
+            sectionElement.style.placeItems = 'center'
+            sectionElement.style.height = '100%'
+            sectionElement.style.display = 'flex'
+            sectionElement.style.flexDirection = 'column'  
+            sectionElement.style.alignItems = 'center'  
+            sectionElement.style.justifyContent = 'center'  
+        }
 
         sectionWrapper.appendChild(sectionElement)
     }
 
     // custom sections
-    //welcome section
-    const sectionElement = document.createElement('section')
-    sectionElement.id = `section-welcome`
-    sectionElement.innerHTML = `
-        <h1> Welcome to Page Explorer </h1>
-    `
-    sectionWrapper.appendChild(sectionElement)
-    setActiveSectionByElement(sectionElement, 'section-welcome')
 }
 
 // thank you https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript/51126086#51126086

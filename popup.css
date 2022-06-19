@@ -155,3 +155,33 @@ body.dark-mode {
     font-style: italic;
     font-weight: bold;
 }
+
+.home-page-host {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.home-page-icon {
+    height: 24px;
+    width: 24px;
+    margin-left: 8px;
+}
+
+.home-page-document-size {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.section-home-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-home-row--path {
+    margin-bottom: 36px;
+}
+
+.section-home-row--host {
+    margin-top: 12px;
+}
