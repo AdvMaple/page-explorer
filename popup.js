@@ -12,10 +12,15 @@ async function reloadPopup() {
     document.getElementById('loading-page-text').style.display = 'grid'
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        function: run,
-    }, result)
+    if(tab.url.includes('chrome://') || tab.url.includes('chrome-extension://')) {
+        document.getElementById('loading-page-text').innerHTML = 'Cannot access a "chrome://" url.'
+    } else {
+        document.getElementById('loading-page-text').innerHTML = 'Loading...'
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: run,
+        }, result)
+    }
 }
 
 function run() {
