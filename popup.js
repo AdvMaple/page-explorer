@@ -141,7 +141,9 @@ function run() {
             this.data.home.htmlDocumentSizeUnit = 'MiB'
             this.data.home.host = window.location.host
             this.data.home.path = window.location.pathname
-            this.data.home.icon = document.querySelector('head [rel*="icon"]').getAttribute('href')
+            const favicon = document.querySelector('head [rel*="icon"]')
+            this.data.home.icon = favicon ? favicon.getAttribute('href') : ''
+            if(!this.data.home.icon.includes('://') && this.data.home.icon) this.data.home.icon = `${window.location.origin}/${this.data.home.icon}`
             
             return this.data
         }
@@ -352,7 +354,7 @@ function result(resultTab) {
     // home
     document.getElementById('section-home').innerHTML = `
         <div class="section-home-row">
-            <img class="home-page-icon" src="${result.home.icon}">
+            ${result.home.icon ? `<img class="home-page-icon" src="${result.home.icon}">` : '<object data="assets/help.svg"></object>'}
         </div>
         <div class="section-home-row section-home-row--host">
             <div class="home-page-host">${result.home.host}</div>
