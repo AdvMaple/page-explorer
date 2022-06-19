@@ -100,7 +100,7 @@ function run() {
             this.elementWrapper.appendChild(this.classFragment)
             Object.keys(this.data.classesTmp).forEach(cls => {
                 if (cls.includes('=') || cls.includes(':')) return
-                if (cls.includes('.')) return
+                if (cls.includes('.') || cls.includes('+')) return
                 this.data.classes[cls] = {
                     counter: this.data.classesTmp[cls],
                     attributes: this._getClassAttributes(cls)
@@ -145,6 +145,7 @@ function run() {
             const favicon = document.querySelector('head [rel*="icon"]')
             this.data.home.icon = favicon ? favicon.getAttribute('href') : ''
             if(!this.data.home.icon.includes('://') && this.data.home.icon) this.data.home.icon = `${window.location.origin}/${this.data.home.icon}`
+            this.data.home.faviconUrl = `${window.location.origin}/favicon.ico`
             
             return this.data
         }
