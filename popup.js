@@ -52,6 +52,7 @@ function run() {
                     // ignore defs
                     if(!element.outerHTML.includes('<defs>')) {
                         // ignore svg elements with 0 viewBox and duplicates
+                        if(!element.getAttribute('viewBox')) element.setAttribute('viewBox', '0 0 24 24')
                         if(!this.data.svgs.includes(element.outerHTML) && element.getAttribute('viewBox') !== '0 0 0 0') this.data.svgs.push(element.outerHTML)
                     }
                 }
