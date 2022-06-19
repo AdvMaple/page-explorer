@@ -46,7 +46,10 @@
 }
 
 main section {
-    display: none;
+    display: grid;
+    top:-9999999999px;
+    position: absolute;
+    width: 100%;
     color:#282828;
 }
 
@@ -63,6 +66,7 @@ body {
 main {
     flex: 1;
     overflow: auto;
+    position: relative;
 }
 
 section {

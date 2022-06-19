@@ -228,10 +228,10 @@ function generateSidebar(data) {
             activeSidebarItem.classList.add('sidebar-item--active')
 
             // change display of section
-            if(activeSection) activeSection.style.display = 'none'
+            if(activeSection) activeSection.style.top = '-9999999999px'
             console.log(`section-${e.target.id.replace('sidebar-item-', '')}`)
             activeSection = document.getElementById(`section-${e.target.id.replace('sidebar-item-', '')}`)
-            activeSection.style.display = 'grid'
+            activeSection.style.top = '0'
         })
         
         sidebarWrapper.appendChild(sidebarElement)
