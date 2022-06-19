@@ -222,16 +222,7 @@ function generateSidebar(data) {
                 <div class="sidebar-item--counter"></div>
         `
         sidebarElement.addEventListener('click', (e) => {
-            // change sidebar active element
-            if(activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
-            activeSidebarItem = e.target
-            activeSidebarItem.classList.add('sidebar-item--active')
-
-            // change display of section
-            if(activeSection) activeSection.style.top = '-9999999999px'
-            console.log(`section-${e.target.id.replace('sidebar-item-', '')}`)
-            activeSection = document.getElementById(`section-${e.target.id.replace('sidebar-item-', '')}`)
-            activeSection.style.top = '0'
+            setActiveSectionByElement(e.target)
         })
         
         sidebarWrapper.appendChild(sidebarElement)
@@ -261,6 +252,18 @@ function generateSidebar(data) {
     sidebarWrapper.appendChild(reloadEl)
 }
 
+function setActiveSectionByElement(el, id) {
+    // change sidebar active element
+    if(activeSidebarItem) activeSidebarItem.classList.remove('sidebar-item--active')
+    activeSidebarItem = el
+    activeSidebarItem.classList.add('sidebar-item--active')
+
+    // change display of section
+    if(activeSection) activeSection.style.top = '-9999999999px'
+    activeSection = document.getElementById(id) || document.getElementById(`section-${el.id.replace('sidebar-item-', '')}`) 
+    activeSection.style.top = '0'
+}
+
 function generateSections(data) {
     const sectionWrapper = document.body.querySelector('main')
     sectionWrapper.innerHTML = ''
@@ -271,6 +274,16 @@ function generateSections(data) {
         sectionElement.id = `section-${identifier}`
         sectionWrapper.appendChild(sectionElement)
     }
+
+    // custom sections
+    //welcome section
+    const sectionElement = document.createElement('section')
+    sectionElement.id = `section-welcome`
+    sectionElement.innerHTML = `
+        <h1> Welcome to Page Analyzer </h1>
+    `
+    sectionWrapper.appendChild(sectionElement)
+    setActiveSectionByElement(sectionElement, 'section-welcome')
 }
 
 // thank you https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript/51126086#51126086
