@@ -74,7 +74,6 @@ function run() {
 
             // filter out duplicates
             this.data.imageUrls = [...new Set(this.data.imageUrls)]
-            this.data.links = [...new Set(this.data.links)]
             this.data.boxShadows = [...new Set(this.data.boxShadows)]
 
             return this.data
@@ -83,7 +82,6 @@ function run() {
         _checkAndAddLink(val) {
             if(!this._existsValue(val) || typeof(val) !== 'string') return
             if(this._isGraphic(val)) return this.data.imageUrls.push(val)
-            this.data.links.push(val)
         }
     
         _checkAndAddColor(val) {
@@ -100,7 +98,6 @@ function run() {
         _resetData() {
             this.data = {
                 imageUrls: [],
-                links: [],
                 colors: {},
                 boxShadows: [],
                 svgs: [],
