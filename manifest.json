@@ -1,6 +1,6 @@
 {
-    "name": "Page Analyzer",
-    "description": "Analyze Html, CSS and Javascript of active page.",
+    "name": "Page Explorer",
+    "description": "Explore Html, CSS and Javascript of a page.",
     "version": "1.0",
     "manifest_version": 3,
     "permissions": ["activeTab", "scripting"],

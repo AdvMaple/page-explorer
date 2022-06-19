@@ -1,6 +1,6 @@
 let activeSection, activeSidebarItem
 let isDarkMode = false
-const paWindowIdentifier = 'pageAnalyzer_xSfAvdsmKLSMKDsV'
+const paWindowIdentifier = 'pageExplorer_xSfAvdsmKLSMKDsV'
 
 function toggleDarkMode() {
     isDarkMode = !isDarkMode
@@ -17,8 +17,8 @@ async function reloadPopup() {
 }
 
 function run() {
-    // analyzer class
-    class Analyzer {
+    // explorer class
+    class Explorer {
         data = {}
         
         analyze() {
@@ -135,12 +135,12 @@ function run() {
         }
     
         banner() {
-           console.log(`%cPage Analyzer ${manifestData.version}`, 'font-weight: bold; font-family: "Roboto", sans-serif;')
+           console.log(`%cPage Explorer ${manifestData.version}`, 'font-weight: bold; font-family: "Roboto", sans-serif;')
         }
     }
 
-    const analyzer = new Analyzer()
-    return analyzer.analyze()
+    const explorer = new Explorer()
+    return explorer.analyze()
 }
 
 function result(resultTab) {
@@ -305,7 +305,7 @@ function generateSections(data) {
     const sectionElement = document.createElement('section')
     sectionElement.id = `section-welcome`
     sectionElement.innerHTML = `
-        <h1> Welcome to Page Analyzer </h1>
+        <h1> Welcome to Page Explorer </h1>
     `
     sectionWrapper.appendChild(sectionElement)
     setActiveSectionByElement(sectionElement, 'section-welcome')
