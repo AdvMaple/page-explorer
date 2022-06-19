@@ -141,9 +141,10 @@ body.dark-mode {
     color: var(--color-white);
 }
 
-.pre-code {
+.pre-code pre{
     color: var(--color-primary);
     background-color: var(--color-white);
+    font-size: 12px;
 }
 
 #loading-page-text {
