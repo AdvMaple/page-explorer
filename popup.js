@@ -114,9 +114,9 @@ function run() {
 
             document.body.appendChild(defaultElement)
             document.body.appendChild(classElement)
-
-            const defaultStyle = getComputedStyle(document.querySelector(elementTag))
-            const classStyle = getComputedStyle(document.querySelector(`${elementTag}.${cls}`))
+            
+            const defaultStyle = getComputedStyle(defaultElement)
+            const classStyle = getComputedStyle(classElement)
 
             let attributes = []
 
