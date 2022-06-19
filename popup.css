@@ -44,7 +44,7 @@
     bottom: 0;
     right: 0;
     padding-right: 4px;
-    color: var(--color-black);
+    color: var(--color-white);
     pointer-events: none;
 }
 
