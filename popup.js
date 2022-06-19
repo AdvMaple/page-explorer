@@ -49,7 +49,11 @@ function run() {
 
                 // svg
                 if(element.tagName === 'svg') {
-                    if(!this.data.svgs.includes(element.outerHTML)) this.data.svgs.push(element.outerHTML)
+                    // ignore defs
+                    if(!element.outerHTML.includes('<defs>')) {
+                        // ignore svg elements with 0 viewBox and duplicates
+                        if(!this.data.svgs.includes(element.outerHTML) && element.getAttribute('viewBox') !== '0 0 0 0') this.data.svgs.push(element.outerHTML)
+                    }
                 }
 
                 // box shadow
@@ -159,6 +163,11 @@ function result(resultTab) {
             }
             // Svg
             else if(identifier === 'svgs') {
+                sectionElement.removeAttribute('data-copy')
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.outerHTML)
+                })
+
                 sectionElement.innerHTML = data
             }
             // Color
