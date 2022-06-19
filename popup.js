@@ -22,6 +22,8 @@ function run() {
         data = {}
 
         analyze() {
+            console.log('starting analyze...')
+            const start = performance.now()
             this._resetData()
 
             const elements = document.getElementsByTagName('*')
@@ -59,15 +61,8 @@ function run() {
 
                 //classes
                 element.classList.forEach(cls => {
-                    if (cls.includes('=') || cls.includes(':')) return
-                    if (this.data.classes[cls]) {
-                        this.data.classes[cls].counter += 1
-                    } else {
-                        this.data.classes[cls] = {
-                            counter: 1,
-                            attributes: this._getClassAttributes(cls)
-                        }
-                    }
+                    if(!this.data.classesTmp[cls]) this.data.classesTmp[cls] = 1
+                    else this.data.classesTmp[cls] += 1
                 })
 
                 // html tag counters
@@ -77,6 +72,35 @@ function run() {
                 this._checkAndAddBoxShadow(style.boxShadow)
 
             }
+
+            // insert and analyze classes at once -> better performance 
+            this.classFragment = document.createDocumentFragment()
+            // add default element to compare
+            const elementTag = `element-${new Date().getTime()}`
+            this.elementWrapper = document.createElement(elementTag)
+            this.defaultElement = document.createElement(elementTag)
+            document.body.appendChild(this.elementWrapper)
+            this.elementWrapper.appendChild(this.defaultElement)
+            this.defaultStyle = getComputedStyle(this.defaultElement)
+
+            Object.keys(this.data.classesTmp).forEach(cls => {
+                const classElement = document.createElement(elementTag)
+                classElement.classList.add(cls)
+                this.classFragment.appendChild(classElement)
+            })
+
+            // add fragment to body
+            this.elementWrapper.appendChild(this.classFragment)
+            Object.keys(this.data.classesTmp).forEach(cls => {
+                if (cls.includes('=') || cls.includes(':')) return
+                this.data.classes[cls] = {
+                    counter: this.data.classesTmp[cls],
+                    attributes: this._getClassAttributes(cls)
+                }
+            })
+
+            this.elementWrapper.remove()
+            delete this.data.classesTmp
 
             // sort colors by counter -> hightest to lowest
             const colorsSortable = []
@@ -103,35 +127,25 @@ function run() {
             this.data.imageUrls = [...new Set(this.data.imageUrls)]
             this.data.boxShadows = [...new Set(this.data.boxShadows)]
 
+            console.log(`done. took ${(performance.now() - start) / 1000}s`)
             return this.data
         }
 
         _getClassAttributes(cls) {
-            const elementTag = `element-${new Date().getTime()}`
-            const defaultElement = document.createElement(elementTag)
-            const classElement = document.createElement(elementTag)
-            classElement.classList.add(cls)
-
-            document.body.appendChild(defaultElement)
-            document.body.appendChild(classElement)
-            
-            const defaultStyle = getComputedStyle(defaultElement)
+            const classElement = this.elementWrapper.querySelector(`.${cls}`)
             const classStyle = getComputedStyle(classElement)
 
             let attributes = []
 
             for (let i = 0; i < classStyle.length; i++) {
                 const attr = classStyle[i]
-                if (classStyle[attr] !== defaultStyle[attr]) {
+                if (classStyle[attr] !== this.defaultStyle[attr]) {
                     attributes.push({
                         attr,
                         value: classStyle[attr]
                     })
                 }
             }
-
-            defaultElement.remove()
-            classElement.remove()
 
             return attributes
         }
@@ -172,7 +186,8 @@ function run() {
                 boxShadows: [],
                 svgs: [],
                 htmlTags: {},
-                classes: {}
+                classes: {},
+                classesTmp: [],
             }
         }
 
