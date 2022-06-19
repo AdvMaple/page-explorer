@@ -268,6 +268,8 @@ function result(resultTab) {
                     <p>${data.counter}</p>
                 `
                 sectionElement.setAttribute('data-copy', data.tagName.toLowerCase())
+                sectionElement.style.padding = '8px'
+                sectionElement.style.textAlign = 'center'
             }
             // Box Shadow
             else if (identifier === 'boxShadows') {
