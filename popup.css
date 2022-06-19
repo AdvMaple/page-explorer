@@ -49,19 +49,19 @@
 }
 
 .sidebar-item.sidebar-item--active {
-   background-color: var(--color-secondary);
+    background-color: var(--color-secondary);
 }
 
 main section {
     display: grid;
-    top:-9999999999px;
+    top: -9999999999px;
     position: absolute;
     width: 100%;
-    color:#282828;
+    color: #282828;
 }
 
 .dark-mode main section {
-    color:var(--color-white);
+    color: var(--color-white);
 }
 
 body {
@@ -124,12 +124,24 @@ body.dark-mode {
     animation: alert-box 0.4s ease;
     width: 100%;
     text-align: center;
-  }
-  @keyframes alert-box {
+}
+
+@keyframes alert-box {
     0% {
-      top: -10%;
+        top: -10%;
     }
+
     100% {
-      top: 0;
+        top: 0;
     }
-  }
+}
+
+.dark-mode .pre-code {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.pre-code {
+    color: var(--color-primary);
+    background-color: var(--color-white);
+}

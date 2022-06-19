@@ -57,6 +57,19 @@ function run() {
                     }
                 }
 
+                //classes
+                element.classList.forEach(cls => {
+                    if(cls.includes('=') || cls.includes(':')) return
+                    if(this.data.classes[cls]) {
+                        this.data.classes[cls].counter += 1
+                    } else {
+                        this.data.classes[cls] = {
+                            counter: 1,
+                            attributes: this._getClassAttributes(cls)
+                        }
+                    }
+                })
+
                 // html tag counters
                 this._checkAndAddHtmlTagName(element.tagName)
 
@@ -79,11 +92,48 @@ function run() {
             }
             this.data.htmlTags = this._sortArrayByCounter(tagsSortable)
 
+            // sort classes by counter
+            const classesSortable = []
+            for(const cls in this.data.classes) {
+                classesSortable.push({className: cls, counter: this.data.classes[cls].counter, attributes: this.data.classes[cls].attributes})
+            }
+            this.data.classes = this._sortArrayByCounter(classesSortable)
+
             // filter out duplicates
             this.data.imageUrls = [...new Set(this.data.imageUrls)]
             this.data.boxShadows = [...new Set(this.data.boxShadows)]
 
             return this.data
+        }
+
+         _getClassAttributes(cls) {
+            const elementTag = `element-${new Date().getTime()}`
+            const defaultElement = document.createElement(elementTag)
+            const classElement = document.createElement(elementTag)
+            classElement.classList.add(cls)
+            
+            document.body.appendChild(defaultElement)
+            document.body.appendChild(classElement)
+
+            const defaultStyle = getComputedStyle(document.querySelector(elementTag))
+            const classStyle = getComputedStyle(document.querySelector(`${elementTag}.${cls}`))
+
+            let attributes = []
+
+            for(let i = 0; i < classStyle.length; i++) {
+                const attr = classStyle[i]
+                if(classStyle[attr] !== defaultStyle[attr]) {
+                    attributes.push({
+                        attr,
+                        value: classStyle[attr]
+                    })
+                }
+            }
+
+            defaultElement.remove()
+            classElement.remove()
+
+            return attributes
         }
     
         _checkAndAddLink(val) {
@@ -122,6 +172,7 @@ function run() {
                 boxShadows: [],
                 svgs: [],
                 htmlTags: {},
+                classes: {}
             }
         }
     
@@ -209,6 +260,37 @@ function result(resultTab) {
                 boxShadowEl.style.width = '60px'
                 boxShadowEl.style.pointerEvents = 'none'
                 sectionElement.appendChild(boxShadowEl)
+            }
+            // classes
+            else if (identifier === 'classes') {
+                const count = document.createElement('div')
+                count.style.position = 'absolute'
+                count.style.top = '8px'
+                count.style.right = '8px'
+                count.innerHTML = `// count: ${data.counter}`
+
+                const pre = document.createElement('pre')
+                if(data.attributes.length === 0) {
+                    pre.innerHTML = `<b>.${data.className}</b> { }`
+                } else {
+                    pre.innerHTML = `<b>.${data.className}</b> {\n    ${data.attributes.map(attribute => `${attribute.attr}: ${attribute.value};\n`).join('    ')}}`
+                }
+                pre.style.pointerEvents = 'none'
+                count.style.pointerEvents = 'none'
+
+                sectionElement.classList.add('pre-code')
+                sectionElement.removeAttribute('data-copy')
+                sectionElement.addEventListener('click', (e) => {
+                    copyToClp(e.target.querySelector('pre').innerHTML.replace('<b>', '').replace('</b>', ''))
+                })
+                
+                sectionElement.style.height = 'unset'
+                sectionElement.style.placeItems = 'unset'
+                sectionElement.style.padding = '8px'
+                sectionElement.style.position = 'relative'
+
+                sectionElement.appendChild(pre)
+                sectionElement.appendChild(count)
             }
             // Default Element
             else {
@@ -298,6 +380,12 @@ function generateSections(data) {
         const identifier = dataKeys[i]
         const sectionElement = document.createElement('section')
         sectionElement.id = `section-${identifier}`
+
+        // adjust sections if needed
+        if(identifier === 'classes') {
+            sectionElement.style.gridTemplateColumns = '1fr'
+        }
+
         sectionWrapper.appendChild(sectionElement)
     }
 
