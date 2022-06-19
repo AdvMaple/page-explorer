@@ -1,3 +1,10 @@
+:root {
+    --color-black: #111;
+    --color-white: #fff;
+    --color-primary: #474b4f;
+    --color-secondary: #86c232;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +14,7 @@
 .sidebar {
     width: 48px;
     height: 100%;
-    background-color: #d65d0e;
+    background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
     z-index: 1;
@@ -18,7 +25,7 @@
 }
 
 .sidebar-item {
-    border-bottom: 1px solid #282828;
+    border-bottom: 1px solid var(--color-black);
     display: grid;
     place-items: center;
     width: 48px;
@@ -37,12 +44,12 @@
     bottom: 0;
     right: 0;
     padding-right: 4px;
-    color: #282828;
+    color: var(--color-black);
     pointer-events: none;
 }
 
 .sidebar-item.sidebar-item--active {
-   background-color: #fe8019;
+   background-color: var(--color-secondary);
 }
 
 main section {
@@ -54,7 +61,7 @@ main section {
 }
 
 .dark-mode main section {
-    color:#dedede;
+    color:var(--color-white);
 }
 
 body {
@@ -81,7 +88,7 @@ section {
 .section-element {
     height: 120px;
     position: relative;
-    border: 1px solid #282828;
+    border: 1px solid var(--color-black);
     cursor: pointer;
     display: grid;
     place-items: center;
@@ -89,7 +96,7 @@ section {
 }
 
 .dark-mode .section-element {
-    border: 1px solid #dedede;
+    border: 1px solid var(--color-white);
 }
 
 .section-element img {
@@ -100,11 +107,11 @@ section {
 }
 
 body {
-    background-color: #dedede;
+    background-color: var(--color-white);
 }
 
 body.dark-mode {
-    background-color: #282828;
+    background-color: var(--color-black);
 }
 
 .alert {
@@ -112,8 +119,8 @@ body.dark-mode {
     top: 0;
     padding: 12px;
     font-size: 14px;
-    color: #ffffff;
-    background-color: #d65d0e;
+    color: var(--color-white);
+    background-color: var(--color-primary);
     animation: alert-box 0.4s ease;
     width: 100%;
     text-align: center;
