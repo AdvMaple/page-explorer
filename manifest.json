@@ -1,16 +1,19 @@
 {
-    "name": "Page Explorer",
-    "description": "Explore Html, CSS and Javascript of a page.",
-    "version": "1.0",
-    "manifest_version": 3,
-    "permissions": ["activeTab", "scripting"],
-    "action": {
-        "default_popup": "popup.html",
-        "default_icon": {
-          "16": "/assets/file-search-16x16.png",
-          "32": "/assets/file-search-32x32.png",
-          "48": "/assets/file-search-48x48.png",
-          "128": "/assets/file-search-128x128.png"
-        }
+  "name": "Page Explorer",
+  "description": "Explore Html, CSS and Javascript of a page.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/assets/file-search-16x16.png",
+      "32": "/assets/file-search-32x32.png",
+      "48": "/assets/file-search-48x48.png",
+      "128": "/assets/file-search-128x128.png"
     }
   }
+}
