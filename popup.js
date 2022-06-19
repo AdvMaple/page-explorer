@@ -100,6 +100,7 @@ function run() {
             this.elementWrapper.appendChild(this.classFragment)
             Object.keys(this.data.classesTmp).forEach(cls => {
                 if (cls.includes('=') || cls.includes(':')) return
+                if (cls.includes('.')) return
                 this.data.classes[cls] = {
                     counter: this.data.classesTmp[cls],
                     attributes: this._getClassAttributes(cls)
