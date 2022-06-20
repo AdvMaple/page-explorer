@@ -1,6 +1,5 @@
 let activeSection, activeSidebarItem
 let isDarkMode = false
-const paWindowIdentifier = 'pageExplorer_xSfAvdsmKLSMKDsV'
 
 function toggleDarkMode() {
     isDarkMode = !isDarkMode
@@ -35,21 +34,21 @@ function injectAndExecutePageExplorer(tab) {
     }, () => {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            func: explorePage,
-        }, result)
+            func: runPageExplorer,
+        }, pageExplorerCallback)
     })
+}
+
+function runPageExplorer() {
+    const explorer = new PageExplorer()
+    return explorer.analyze()
 }
 
 function canExecuteScript(tab) {
     return !tab.url.includes('chrome://') && !tab.url.includes('chrome-extension://')
 }
 
-function explorePage() {
-    const explorer = new PageExplorer()
-    return explorer.analyze()
-}
-
-function result(resultTab) {
+function pageExplorerCallback(resultTab) {
     if (!resultTab) return
     const result = resultTab[0].result
     if (!result) return
@@ -243,7 +242,7 @@ function setActiveSectionBySidebarElement(el) {
     activeSidebarItem = el
     activeSidebarItem.classList.add('sidebar-item--active')
 
-    // change display of section
+    // change section active element
     if (activeSection) activeSection.style.top = '-9999999999px'
     activeSection = document.getElementById(`section-${el.id.replace('sidebar-item-', '')}`)
     activeSection.style.top = '0'
