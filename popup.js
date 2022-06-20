@@ -9,6 +9,7 @@ function toggleDarkMode() {
 
 function setPopupLoadingState(isLoading) {
     if(isLoading) {
+        document.getElementById('loading-page-text').innerHTML = 'Loading...'
         document.body.querySelector('main').style.display = 'none'
         document.getElementById('loading-page-text').style.display = 'grid'
     } else {
@@ -19,23 +20,28 @@ function setPopupLoadingState(isLoading) {
 
 async function reloadPopup() {
     setPopupLoadingState(true)
+
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+        
+    if(!canExecuteScript(tab)) return document.getElementById('loading-page-text').innerHTML = 'Cannot access a "chrome://" url.'
 
-    if(tab.url.includes('chrome://') || tab.url.includes('chrome-extension://')) {
-        document.getElementById('loading-page-text').innerHTML = 'Cannot access a "chrome://" url.'
-    } else {
-        document.getElementById('loading-page-text').innerHTML = 'Loading...'
+    injectAndExecutePageExplorer(tab)
+}
 
+function injectAndExecutePageExplorer(tab) {
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ['PageExplorer.js'],
+    }, () => {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            files: ['PageExplorer.js'],
-        }, () => {
-            chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                func: explorePage,
-            }, result)
-        })
-    }
+            func: explorePage,
+        }, result)
+    })
+}
+
+function canExecuteScript(tab) {
+    return !tab.url.includes('chrome://') && !tab.url.includes('chrome-extension://')
 }
 
 function explorePage() {
