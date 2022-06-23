@@ -99,6 +99,7 @@ function pageExplorerCallback(resultTab) {
             else if (identifier === 'colors') {
                 sectionElement.style.backgroundColor = data.color
                 sectionElement.setAttribute('data-copy', data.color)
+                sectionElement.innerHTML = `<div class="section-element-color-counter">${data.counter}</div>`
             }
             // Html Tags
             else if (identifier === 'htmlTags') {

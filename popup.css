@@ -106,6 +106,17 @@ section {
     width: 100%;
 }
 
+.section-element-color-counter {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 4px;
+    border-top-left-radius: 4px;
+    pointer-events: none;
+}
+
 body {
     background-color: var(--color-white);
 }
